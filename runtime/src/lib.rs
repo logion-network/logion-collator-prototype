@@ -9,6 +9,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 mod weights;
 pub mod xcm_config;
 
+use logion_shared::{CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory};
 use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
@@ -26,7 +27,7 @@ use sp_version::RuntimeVersion;
 
 use frame_support::{
 	construct_runtime, parameter_types,
-	traits::Contains,
+	traits::{Contains, WrapperKeepOpaque},
 	weights::{
 		constants::WEIGHT_PER_SECOND, ConstantMultiplier, DispatchClass, Weight,
 		WeightToFeeCoefficient, WeightToFeeCoefficients, WeightToFeePolynomial,
@@ -37,6 +38,7 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
+use pallet_multisig::Timepoint;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
 use xcm_config::{XcmConfig, XcmOriginToTransactDispatchOrigin};
@@ -506,6 +508,84 @@ impl pallet_lo_authority_list::Config for Runtime {
 	type Event = Event;
 }
 
+parameter_types! {
+	pub const MaxMetadataItemNameSize: usize = 255;
+	pub const MaxMetadataItemValueSize: usize = 4096;
+	pub const MaxFileNatureSize: usize = 255;
+	pub const MaxLinkNatureSize: usize = 255;
+	pub const MaxCollectionItemDescriptionSize: usize = 4096;
+}
+
+impl pallet_logion_loc::Config for Runtime {
+	type LocId = u128;
+	type Event = Event;
+	type Hash = Hash;
+	type CreateOrigin = LoAuthorityList;
+	type MaxMetadataItemNameSize = MaxMetadataItemNameSize;
+	type MaxMetadataItemValueSize = MaxMetadataItemValueSize;
+	type MaxFileNatureSize = MaxFileNatureSize;
+	type MaxLinkNatureSize = MaxLinkNatureSize;
+	type CollectionItemId = Hash;
+	type MaxCollectionItemDescriptionSize = MaxCollectionItemDescriptionSize;
+	type WeightInfo = ();
+}
+
+pub struct PalletRecoveryCreateRecoveryCallFactory;
+impl CreateRecoveryCallFactory<Origin, AccountId, BlockNumber> for PalletRecoveryCreateRecoveryCallFactory {
+	type Call = Call;
+
+	fn build_create_recovery_call(legal_officers: Vec<AccountId>, threshold: u16, delay_period: BlockNumber) -> Call {
+		Call::Recovery(pallet_recovery::Call::create_recovery{ friends : legal_officers, threshold, delay_period })
+	}
+}
+
+impl pallet_verified_recovery::Config for Runtime {
+	type CreateRecoveryCallFactory = PalletRecoveryCreateRecoveryCallFactory;
+	type LocQuery = LogionLoc;
+	type Event = Event;
+	type WeightInfo = ();
+}
+
+pub struct PalletMultisigApproveAsMultiCallFactory;
+impl MultisigApproveAsMultiCallFactory<Origin, AccountId, Timepoint<BlockNumber>> for PalletMultisigApproveAsMultiCallFactory {
+	type Call = Call;
+
+	fn build_approve_as_multi_call(
+        threshold: u16,
+        other_signatories: Vec<AccountId>,
+        maybe_timepoint: Option<Timepoint<BlockNumber>>,
+        call_hash: [u8; 32],
+        max_weight: Weight
+	) -> Call {
+		Call::Multisig(pallet_multisig::Call::approve_as_multi{ threshold, other_signatories, maybe_timepoint, call_hash, max_weight })
+	}
+}
+
+pub struct PalletMultisigAsMultiCallFactory;
+impl MultisigAsMultiCallFactory<Origin, AccountId, Timepoint<BlockNumber>> for PalletMultisigAsMultiCallFactory {
+	type Call = Call;
+
+	fn build_as_multi_call(
+        threshold: u16,
+        other_signatories: Vec<AccountId>,
+        maybe_timepoint: Option<Timepoint<BlockNumber>>,
+        call: Vec<u8>,
+        store_call: bool,
+        max_weight: Weight,
+	) -> Call {
+		Call::Multisig(pallet_multisig::Call::as_multi{ threshold, other_signatories, maybe_timepoint, call: WrapperKeepOpaque::from_encoded(call), store_call, max_weight })
+	}
+}
+
+impl pallet_logion_vault::Config for Runtime {
+	type Call = Call;
+	type MultisigApproveAsMultiCallFactory = PalletMultisigApproveAsMultiCallFactory;
+	type MultisigAsMultiCallFactory = PalletMultisigAsMultiCallFactory;
+	type IsLegalOfficer = LoAuthorityList;
+	type Event = Event;
+	type WeightInfo = ();
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -543,6 +623,9 @@ construct_runtime!(
 		Multisig:  pallet_multisig::{Pallet, Call, Storage, Event<T>} = 41,
 		Recovery: pallet_recovery::{Pallet, Call, Storage, Event<T>} = 42,
 		LoAuthorityList: pallet_lo_authority_list::{Pallet, Call, Storage, Event<T>, Config<T>} = 43,
+		LogionLoc: pallet_logion_loc::{Pallet, Call, Storage, Event<T>} = 44,
+		VerifiedRecovery: pallet_verified_recovery::{Pallet, Call, Event<T>} = 45,
+		Vault: pallet_logion_vault::{Pallet, Call, Event<T>} = 46,
 	}
 );
 

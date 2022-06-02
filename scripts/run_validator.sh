@@ -17,6 +17,6 @@ fi
     --$1 \
     --validator \
     --base-path /tmp/relay/$1 \
-    --chain ./scripts/rococo-custom-2-raw.json \
+    --chain ./res/rococo-custom-2-raw.json \
     --port 30333 \
     --ws-port 9944

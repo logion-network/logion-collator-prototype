@@ -75,10 +75,11 @@ pallet-collator-selection = { git = "https://github.com/paritytech/cumulus", def
 parachain-info = { git = "https://github.com/paritytech/cumulus", default-features = false,  branch = "polkadot-v0.9.22" }
 
 # Logion
+logion-shared = { git = "https://github.com/logion-network/logion-shared", default-features = false,  branch = "polkadot-v0.9.22" }
 pallet-lo-authority-list = { git = "https://github.com/logion-network/pallet-lo-authority-list", default-features = false,  branch = "polkadot-v0.9.22" }
-#pallet-logion-loc = { git = "https://github.com/logion-network/pallet-logion-loc", default-features = false,  branch = "polkadot-v0.9.22" }
-#pallet-logion-vault = { git = "https://github.com/logion-network/pallet-logion-vault", default-features = false,  branch = "polkadot-v0.9.22" }
-#pallet-verified-recovery = { git = "https://github.com/logion-network/pallet-verified-recovery", default-features = false,  branch = "polkadot-v0.9.22" }
+pallet-logion-loc = { git = "https://github.com/logion-network/pallet-logion-loc", default-features = false,  branch = "polkadot-v0.9.22" }
+pallet-logion-vault = { git = "https://github.com/logion-network/pallet-logion-vault", default-features = false,  branch = "polkadot-v0.9.22" }
+pallet-verified-recovery = { git = "https://github.com/logion-network/pallet-verified-recovery", default-features = false,  branch = "polkadot-v0.9.22" }
 
 [features]
 default = [
@@ -101,14 +102,15 @@ std = [
 	"frame-support/std",
 	"frame-system-rpc-runtime-api/std",
 	"frame-system/std",
+	"logion-shared/std",
 	"pallet-aura/std",
 	"pallet-authorship/std",
 	"pallet-balances/std",
 	"pallet-collator-selection/std",
-	'pallet-lo-authority-list/std',
-#   'pallet-logion-loc/std',
-#	'pallet-logion-vault/std',
-#	'pallet-verified-recovery/std',
+	"pallet-lo-authority-list/std",
+	"pallet-logion-loc/std",
+	"pallet-logion-vault/std",
+	"pallet-verified-recovery/std",
 	"pallet-multisig/std",
 	"pallet-recovery/std",
 	"pallet-session/std",

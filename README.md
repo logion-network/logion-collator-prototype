@@ -18,6 +18,9 @@ for a step-by-step guide.
 
 ### Setup
 
+Below steps show how to instantiate a local logion parachain and its relay chain. If you already followed those steps
+and did not clean-up the data, you can just start the nodes (steps 3, 4 and 10).
+
 1. If not already done, build your relay chain node with command `./scripts/build_relay_chain.sh`
 
 2. If not already done, build logion collator with command `cargo build --release`
@@ -32,16 +35,31 @@ for a step-by-step guide.
 - Go to Network > Parachains > Parathreads
 - Click on "+ ParaID" and, with Charlie, register para ID 2000
 
-6. Generate chainspec, WASM and genesis state
+6. (optional if you did not change the runtime) Generate plain chainspec:
 
 ```
 ./target/release/logion-collator build-spec --disable-default-bootnode > ./res/rococo-local-logion-plain.json
-./target/release/logion-collator build-spec --chain scripts/rococo-local-logion-plain.json --raw --disable-default-bootnode > ./res/rococo-local-logion-raw.json
+```
+
+Do not forget to set `para_id` and `parachainId` fields to 2000.
+
+7. (optional if you did not change the runtime) Generate raw chainspec
+
+```
+./target/release/logion-collator build-spec --chain ./res/rococo-local-logion-plain.json --raw --disable-default-bootnode > ./res/rococo-local-logion-raw.json
+```
+
+8. Generate WASM and genesis state
+
+```
 ./target/release/logion-collator export-genesis-wasm --chain ./res/rococo-local-logion-raw.json > ./bin/logion-wasm
+```
+
+```
 ./target/release/logion-collator export-genesis-state --chain ./res/rococo-local-logion-raw.json > ./bin/logion-genesis
 ```
 
-7. Register parachain
+9. Register parachain
 
 - With [Polkadot.js](https://polkadot.js.org/apps), connect to the local relay chain (`ws://localhost:9944`)
 - Go to Developer > Sudo
@@ -52,11 +70,12 @@ for a step-by-step guide.
     - parachain: Yes
 - Submit the extrinsic
 
-8. Run collator with command `./scripts/run_collator.sh`
+10. Run collator with command `./scripts/run_collator.sh`
 
-9. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs), this may take some time (around 2 minutes).
+11. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs
+or via Polkadot.js's dashboard: Network > Parachains ), this may take some time (around 3 minutes).
 
-10. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
+12. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
 
 ### Clean-up
 

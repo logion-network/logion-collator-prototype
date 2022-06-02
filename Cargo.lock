@@ -4439,11 +4439,14 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
+ "logion-shared",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
  "pallet-collator-selection",
  "pallet-lo-authority-list",
+ "pallet-logion-loc",
+ "pallet-logion-vault",
  "pallet-multisig",
  "pallet-recovery",
  "pallet-session",
@@ -4451,6 +4454,7 @@ dependencies = [
  "pallet-timestamp",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-verified-recovery",
  "pallet-xcm",
  "parachain-info",
  "parity-scale-codec",
@@ -5537,6 +5541,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-logion-loc"
+version = "0.1.0"
+source = "git+https://github.com/logion-network/pallet-logion-loc?branch=polkadot-v0.9.22#8dd9bc5730e1dad144636b321bc6e636091e8c15"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "log",
+ "logion-shared",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-logion-vault"
+version = "0.1.0"
+source = "git+https://github.com/logion-network/pallet-logion-vault?branch=polkadot-v0.9.22#1071af32a3f4e9d67c8dc68a47c636d188c4a614"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "logion-shared",
+ "pallet-multisig",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-membership"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.22#616d33ea23bab86cafffaf116fc607b6790fb4eb"
@@ -5969,6 +6003,20 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-verified-recovery"
+version = "0.1.0"
+source = "git+https://github.com/logion-network/pallet-verified-recovery?branch=polkadot-v0.9.22#25529cbd92571f7d4837152ad6f78f01017cb948"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "logion-shared",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
  "sp-std",
 ]
 
