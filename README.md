@@ -22,17 +22,17 @@ for a step-by-step guide.
 
 2. If not already done, build logion collator with command `cargo build --release`
 
-2. Run validator alice with command `./scripts/run_validator.sh alice`
+3. Run validator alice with command `./scripts/run_validator.sh alice`
 
-3. Run validator bob with command `./scripts/run_validator.sh bob`
+4. Run validator bob with command `./scripts/run_validator.sh bob`
 
-4. Reserve para ID
+5. Reserve para ID
 
 - With [Polkadot.js](https://polkadot.js.org/apps), connect to the local relay chain (`ws://localhost:9944`)
 - Go to Network > Parachains > Parathreads
 - Click on "+ ParaID" and, with Charlie, register para ID 2000
 
-5. Generate chainspec, WASM and genesis state
+6. Generate chainspec, WASM and genesis state
 
 ```
 ./target/release/logion-collator build-spec --disable-default-bootnode > ./res/rococo-local-logion-plain.json
@@ -41,7 +41,7 @@ for a step-by-step guide.
 ./target/release/logion-collator export-genesis-state --chain ./res/rococo-local-logion-raw.json > ./bin/logion-genesis
 ```
 
-6. Register parachain
+7. Register parachain
 
 - With [Polkadot.js](https://polkadot.js.org/apps), connect to the local relay chain (`ws://localhost:9944`)
 - Go to Developer > Sudo
@@ -52,11 +52,11 @@ for a step-by-step guide.
     - parachain: Yes
 - Submit the extrinsic
 
-5. Run collator with command `./scripts/run_collator.sh`
+8. Run collator with command `./scripts/run_collator.sh`
 
-7. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs), this may take some time (around 2 minutes).
+9. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs), this may take some time (around 2 minutes).
 
-8. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
+10. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
 
 ### Clean-up
 
