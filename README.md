@@ -3,7 +3,7 @@
 This project contains logion's collator node.
 
 This project is originally a fork of the
-[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/commit/ffb52cf5ba20eb824a792c927092196edd424f4d).
+[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/tree/ffb52cf5ba20eb824a792c927092196edd424f4d).
 
 ## Test locally
 
