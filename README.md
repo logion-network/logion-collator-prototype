@@ -3,8 +3,7 @@
 This project contains logion's collator node.
 
 This project is originally a fork of the
-[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-node-template) at
-commit [`ffb52cf5ba20eb824a792c927092196edd424f4d`](https://github.com/substrate-developer-hub/substrate-parachain-template/commit/ffb52cf5ba20eb824a792c927092196edd424f4d).
+[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/commit/ffb52cf5ba20eb824a792c927092196edd424f4d).
 
 ## Test locally
 
@@ -25,7 +24,7 @@ for a step-by-step guide.
 
 2. Run validator alice with command `./scripts/run_validator.sh alice`
 
-3. Run validator bob with command `./scripts/run_validator.sh alice`
+3. Run validator bob with command `./scripts/run_validator.sh bob`
 
 4. Reserve para ID
 
