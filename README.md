@@ -85,3 +85,21 @@ you can run the following command:
 ```
 rm -rf /tmp/relay /tmp/parachain/
 ```
+
+## Cross-compile for Debian 11
+
+Below steps are required if you are building a binary that will run on Debian 11 systems from any Linux system with an incompatible GLIBC or a non-Linux system.
+
+A pre-requisite to cross-compiling the collator node for Debian 11 based systems is to create a Debian/Rust builder image with the following command:
+
+```
+./scripts/build_debian_rust.sh
+```
+
+This image should be rebuilt on a regular time basis in order to update both Debian and Rust.
+
+Once the image is built, you may run:
+
+```
+./scripts/build_debian_collator.sh
+```
