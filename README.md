@@ -52,11 +52,11 @@ Do not forget to set `para_id` and `parachainId` fields to 2000.
 8. Generate WASM and genesis state
 
 ```
-./target/release/logion-collator export-genesis-wasm --chain ./res/rococo-local-logion-raw.json > ./bin/logion-wasm
+./target/release/logion-collator export-genesis-wasm --chain ./res/rococo-local-logion-raw.json > ./bin/local-logion-wasm
 ```
 
 ```
-./target/release/logion-collator export-genesis-state --chain ./res/rococo-local-logion-raw.json > ./bin/logion-genesis
+./target/release/logion-collator export-genesis-state --chain ./res/rococo-local-logion-raw.json > ./bin/local-logion-genesis
 ```
 
 9. Register parachain
@@ -65,8 +65,8 @@ Do not forget to set `para_id` and `parachainId` fields to 2000.
 - Go to Developer > Sudo
 - Select extrinsic `paraSudoWrapper.sudoScheduleParaInitialize` and set the following parameters:
     - id: 2000
-    - genesisHead: set file `./bin/logion-genesis` generated above
-    - validationCode: set file `./bin/logion-wasm` generated above
+    - genesisHead: set file `./bin/local-logion-genesis` generated above
+    - validationCode: set file `./bin/local-logion-wasm` generated above
     - parachain: Yes
 - Submit the extrinsic
 
@@ -102,4 +102,17 @@ Once the image is built, you may run:
 
 ```
 ./scripts/build_debian_collator.sh
+```
+
+## The Chimay parachain
+
+Chimay is logion's test parachain connecting to logion's test relaychain Orval. Chimay's chainspec (plain and raw) can be found in the `res` folder.
+When registering Chimay, the genesis WASM and state have to be provided. They can be generated as follows (do not forget to build the node binary first):
+
+```
+./target/release/logion-collator export-genesis-wasm --chain ./res/chimay-raw.json > ./bin/chimay-genesis-wasm
+```
+
+```
+./target/release/logion-collator export-genesis-state --chain ./res/chimay-raw.json > ./bin/chimay-genesis-state
 ```
