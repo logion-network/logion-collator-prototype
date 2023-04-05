@@ -3,7 +3,7 @@
 This project contains logion's collator node.
 
 This project is originally a fork of the
-[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/tree/ffb52cf5ba20eb824a792c927092196edd424f4d).
+[Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/tree/a04589bc06143080982345acdf17635c4118fe48).
 
 ## Test locally
 
@@ -41,8 +41,6 @@ and did not clean-up the data, you can just start the nodes (steps 3, 4 and 10).
 ./target/release/logion-collator build-spec --disable-default-bootnode > ./res/rococo-local-logion-plain.json
 ```
 
-Do not forget to set `para_id` and `parachainId` fields to 2000.
-
 7. (optional if you did not change the runtime) Generate raw chainspec
 
 ```
@@ -73,7 +71,8 @@ Do not forget to set `para_id` and `parachainId` fields to 2000.
 10. Run collator with command `./scripts/run_collator.sh`
 
 11. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs
-or via Polkadot.js's dashboard: Network > Parachains ), this may take some time (around 3 minutes).
+or via Polkadot.js's dashboard: Network > Parachains ), this may take some time (around 3 minutes). Also, block production
+may not be stable at the beginning. Again, waiting for a couple of minutes should be enough.
 
 12. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
 
@@ -84,6 +83,23 @@ you can run the following command:
 
 ```
 rm -rf /tmp/relay /tmp/parachain/
+```
+
+## The Chimay parachain
+
+Chimay is logion's test parachain connecting to logion's test relaychain Orval. Chimay's chainspec (plain and raw) can be found in the `res` folder.
+They may be re-generated with the following commands:
+
+```
+./target/release/logion-collator build-spec --disable-default-bootnode --chain chimay > ./res/chimay-plain.json
+./target/release/logion-collator build-spec --disable-default-bootnode --chain ./res/chimay-plain.json --raw > ./res/chimay-raw.json
+```
+
+When registering Chimay, the genesis WASM and state have to be provided. They can be generated as follows (do not forget to build the node binary first):
+
+```
+./target/release/logion-collator export-genesis-wasm --chain ./res/chimay-raw.json > ./bin/chimay-genesis-wasm
+./target/release/logion-collator export-genesis-state --chain ./res/chimay-raw.json > ./bin/chimay-genesis-state
 ```
 
 ## Cross-compile for Debian 11
@@ -102,17 +118,4 @@ Once the image is built, you may run:
 
 ```
 ./scripts/build_debian_collator.sh
-```
-
-## The Chimay parachain
-
-Chimay is logion's test parachain connecting to logion's test relaychain Orval. Chimay's chainspec (plain and raw) can be found in the `res` folder.
-When registering Chimay, the genesis WASM and state have to be provided. They can be generated as follows (do not forget to build the node binary first):
-
-```
-./target/release/logion-collator export-genesis-wasm --chain ./res/chimay-raw.json > ./bin/chimay-genesis-wasm
-```
-
-```
-./target/release/logion-collator export-genesis-state --chain ./res/chimay-raw.json > ./bin/chimay-genesis-state
 ```
