@@ -1,6 +1,6 @@
 FROM debian:11
 
-RUN apt-get update && apt-get install curl build-essential libclang-dev -y
+RUN apt-get update && apt-get install curl build-essential libclang-dev protobuf-compiler -y
 RUN curl https://sh.rustup.rs -sSf > ~/install_rust.sh
 RUN bash ~/install_rust.sh -y
 RUN . ~/.cargo/env && rustup default stable

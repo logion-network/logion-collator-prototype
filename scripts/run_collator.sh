@@ -14,6 +14,6 @@ set -e
     --ws-port 8844 \
     -- \
     --execution wasm \
-    --chain ./res/rococo-custom-2-raw.json \
+    --chain ./res/raw-local-chainspec.json \
     --port 30343 \
     --ws-port 9977

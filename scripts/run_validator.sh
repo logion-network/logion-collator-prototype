@@ -4,6 +4,8 @@
 # into ../polkadot and built. Be sure to select the right branch before building (see runtime's Cargo.toml).
 #
 # In order to run a parachain, 2 validators must be available. This scripts takes as argument the name of the validator. Expected values: alice, bob.
+#
+# The chainspec file was downloaded from https://docs.substrate.io/assets/tutorials/relay-chain-specs/raw-local-chainspec.json
 
 set -e
 
@@ -17,6 +19,6 @@ fi
     --$1 \
     --validator \
     --base-path /tmp/relay/$1 \
-    --chain ./res/rococo-custom-2-raw.json \
+    --chain ./res/raw-local-chainspec.json \
     --port 30333 \
     --ws-port 9944
