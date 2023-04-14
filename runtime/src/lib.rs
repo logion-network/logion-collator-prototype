@@ -150,7 +150,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 1,
+	spec_version: 2,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -234,7 +234,7 @@ parameter_types! {
 		})
 		.avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
 		.build_or_panic();
-	pub const SS58Prefix: u16 = 42;
+	pub const SS58Prefix: u16 = 2021;
 }
 
 // Configure FRAME pallets to include in runtime.
@@ -688,6 +688,13 @@ impl pallet_block_reward::Config for Runtime {
     type DistributionKey = RewardDistributionKey;
 }
 
+impl pallet_utility::Config for Runtime {
+    type RuntimeEvent = RuntimeEvent;
+    type RuntimeCall = RuntimeCall;
+    type PalletsOrigin = OriginCaller;
+    type WeightInfo = ();
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -729,6 +736,7 @@ construct_runtime!(
 		Vote: pallet_logion_vote = 47,
 		Treasury: pallet_treasury = 48,
 		BlockReward: pallet_block_reward = 49,
+		Utility: pallet_utility = 50,
 	}
 );
 
