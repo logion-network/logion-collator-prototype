@@ -1,11 +1,12 @@
 use cumulus_primitives_core::ParaId;
-use logion_runtime::{AccountId, AuraId, Signature, EXISTENTIAL_DEPOSIT};
+use logion_runtime::{AccountId, AuraId, Signature, EXISTENTIAL_DEPOSIT, Balance, LGNT};
 use pallet_lo_authority_list::{LegalOfficerData, HostData};
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sc_service::ChainType;
 use serde::{Deserialize, Serialize};
 use sp_core::{sr25519, Pair, OpaquePeerId, Public};
 use sp_runtime::traits::{IdentifyAccount, Verify};
+use std::str::FromStr;
 
 /// Specialized `ChainSpec` for the normal parachain runtime.
 pub type ChainSpec =
@@ -62,6 +63,8 @@ pub fn template_session_keys(keys: AuraId) -> logion_runtime::SessionKeys {
 	logion_runtime::SessionKeys { aura: keys }
 }
 
+const DEFAULT_TEST_BALANCE: Balance = 1 << 60;
+
 pub fn development_config() -> ChainSpec {
 	ChainSpec::from_genesis(
 		// Name
@@ -79,18 +82,54 @@ pub fn development_config() -> ChainSpec {
 					),
 				],
 				vec![
-					get_account_id_from_seed::<sr25519::Public>("Alice"),
-					get_account_id_from_seed::<sr25519::Public>("Bob"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie"),
-					get_account_id_from_seed::<sr25519::Public>("Dave"),
-					get_account_id_from_seed::<sr25519::Public>("Eve"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
 				],
 				test_parachain_id(),
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -132,20 +171,60 @@ pub fn chimay_config() -> ChainSpec {
 						get_account_id_from_seed::<sr25519::Public>("Alice"),
 						get_collator_keys_from_seed("Alice"),
 					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob"),
+						get_collator_keys_from_seed("Bob"),
+					),
 				],
 				vec![
-					get_account_id_from_seed::<sr25519::Public>("Alice"),
-					get_account_id_from_seed::<sr25519::Public>("Bob"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie"),
-					get_account_id_from_seed::<sr25519::Public>("Dave"),
-					get_account_id_from_seed::<sr25519::Public>("Eve"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
 				],
 				test_parachain_id(),
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -178,6 +257,196 @@ pub fn chimay_config() -> ChainSpec {
 	)
 }
 
+pub fn main_config() -> ChainSpec {
+	const ROOT_PUBLIC_SR25519: &str = "5FUg3QWfipPf8yKv5hMK6wQf8nn6og9BbRNcr3Y8CwUJwTh9";
+
+	const NODE01_PUBLIC_SR25519: &str = "5DjzFDhFidvGCuuy6i8Lsi4XyruYjxTTkJKb1o7XzVdMNPVb";
+	const NODE02_PUBLIC_SR25519: &str = "5DoD9n61SssFiWQDTD7bz1eX3KCxZJ6trVj2GsDwMi2PqP85";
+	const NODE03_PUBLIC_SR25519: &str = "5CJTSSJ4v1RAauZpeqTeddyui4wESZZqPor33wum9aKuQXZC";
+	const NODE04_PUBLIC_SR25519: &str = "5EF6NVgMfRRFMRnNEByNJsQJfD1fokamB9kq2J7SLRVraJrg";
+	const NODE05_PUBLIC_SR25519: &str = "5G7Gtz7iLn3z5PkqfweQJp5jJdV3u8ix7qWcGS4bs38EH1W3";
+	const NODE06_PUBLIC_SR25519: &str = "5EZRCd7FybQKthaD2XuV21RAdU5LqPoveiSdrz9Z6JCstoSH";
+	const NODE07_PUBLIC_SR25519: &str = "5DqwojnfMTfZvERe9SJr3e1ApfaAY8Lye8Tch6WfnmxkfJfw";
+	const NODE08_PUBLIC_SR25519: &str = "5GRie9PZxqzAmPoJAgiLjzgxzFi7LW2ez1TNzzWdUN6yh8Jd";
+	const NODE09_PUBLIC_SR25519: &str = "5CSsbWDRbV5eYuWZsSrFcfkrEnGAjhbmyGJjjpRkjQ7s5dCd";
+	const NODE10_PUBLIC_SR25519: &str = "5FYe8QZfCUZVh6BeuAziATXNcowbZuSngqrguGahscdbhhnz";
+	const NODE11_PUBLIC_SR25519: &str = "5DRbgvZC3LEeJmRe893Q3UEwP2H1DPv5x8ofFgcxihCLu3oL";
+	const NODE12_PUBLIC_SR25519: &str = "5F6h3kuXnhpwkVzDKRd65jrSu53UecKNRdHcgCGFiAbAPWMt";
+
+	ChainSpec::from_genesis(
+		"logion network",
+		"logion",
+		ChainType::Live,
+		move || {
+			build_genesis_config(
+				vec![
+					(
+						AccountId::from_str(NODE01_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE01_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE02_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE02_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE03_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE03_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE04_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE04_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE05_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE05_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE06_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE06_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE07_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE07_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE08_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE08_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE09_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE09_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE10_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE10_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE11_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE11_PUBLIC_SR25519).unwrap()),
+					),
+					(
+						AccountId::from_str(NODE12_PUBLIC_SR25519).unwrap(),
+						AuraId::from(sr25519::Public::from_str(NODE12_PUBLIC_SR25519).unwrap()),
+					),
+				],
+				vec![
+					(
+						AccountId::from_str(ROOT_PUBLIC_SR25519).unwrap(),
+						10 * LGNT,
+					),
+				],
+				main_para_id().into(),
+				AccountId::from_str(ROOT_PUBLIC_SR25519).unwrap(),
+				vec![
+					(
+						AccountId::from_str("5FmqTpGanDBVHedXf42fiuWD8d2iBa2Ve8EfG13juifnpgat").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWPPCrBT2WxxPuBmdMFRs1JddaZjTPWvNdgRzWoFzZw2yT").into_vec().unwrap())),
+							base_url: Some("https://node01.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5GYirZEq8byGJePM9FM3JQG8Zwc5B6AcNpqgbrFvGRw2VQKE").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWSweFqPDamxmzjpgX7Q4bvfnpRKzTJ1igsYLU2ZsLL1TM").into_vec().unwrap())),
+							base_url: Some("https://node02.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5FQvrVyaxF6bmQkSKb6Xr9LdiWG4sr3CoyqPQvxJusowisoj").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWJSnG148nKuds3cEjYrjFMPNWh6biVBPxuppgQnn1owZC").into_vec().unwrap())),
+							base_url: Some("https://node03.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5Gn9QQ6Nnut9qv3yPH2N8ZheaYGaEDQZAiRrdiDq3sBBFPQ2").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWDM1X5iuEmGvxoCjhWXZLMAh3oqfQrAPvaVS8qunKdWCD").into_vec().unwrap())),
+							base_url: Some("https://node04.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5HQjQDPEZ8kxGmr5qKdURSMc18753TSH8FvL39i3Bfd5YRCa").unwrap(), // Never registered
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWF2NhEHjy8tvtsG7VxHEJaaXDhEqgwrW5Jb9N5pYd5pYv").into_vec().unwrap())),
+							base_url: Some("https://node05.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5GWxv6y9XA2CQG3xZ3jDXkvYs4bucazqByHQYrjn8u8mH2qE").unwrap(), // Never registered
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWCM56Vtr8puXPbhwGzDNj66hq5zGwCy23piCfDprSfPEK").into_vec().unwrap())),
+							base_url: Some("https://node06.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5CifPzNnEb8ffgoBB26dkcTKDKZnuMg7c3YyZqLKgyQQPrgB").unwrap(), // Never registered
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWRTrKaUzLeKk21QAke4ifXUo41CRvtJfsvwxYd7UWfcjU").into_vec().unwrap())),
+							base_url: Some("https://node07.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5CZy9rGJBsSF9tQ6SkWsjA7kTBiN5ZYJm9zs5ByVPDHCkNHJ").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWF5rMEqrfrUbQah8RYhvUTyvumpbTeQVoib7Hhk3xTg6r").into_vec().unwrap())),
+							base_url: Some("https://node08.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5HGLG8z2jm5KnHeWh2Du8tLLkEVmJ2B6sEnqVsxC2FYjxWRP").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWJrEjhUrwArbp7dsHx1QQzf2nSyQQR7B4kNUM4jhhMWPU").into_vec().unwrap())),
+							base_url: Some("https://node09.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5HBwJB8DDdXFA8bPRinc8nFuAsZPPFrHLtNeNLvw2jefFN4g").unwrap(), // Never registered
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWHHwE7UFWALqBGHCbt39aacL7ZbBav6sqWXP7jCUuDU1S").into_vec().unwrap())),
+							base_url: Some("https://node10.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5EnvH6Lq6LCNZdwS6xbpndEh1YWB51rsDD2pwGJvt13Ta68B").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWGSp3RmUM9JBSKizT4fZLuivTTH82jS3VQDQcFWhM6Pug").into_vec().unwrap())),
+							base_url: Some("https://node11.logion.network".as_bytes().to_vec()),
+						})
+					),
+					(
+						AccountId::from_str("5Hox4L7Ek1CrXwbYzH8v64WvXkp6rQRkgxuhqE3i2c3farQ9").unwrap(),
+						LegalOfficerData::Host(HostData {
+							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWHyeYMPuCt69eREeM6AQoFdZVnex5ii5uMHEgfzck1mqU").into_vec().unwrap())),
+							base_url: Some("https://node12.logion.network".as_bytes().to_vec()),
+						})
+					),
+				],
+			)
+		},
+		// Bootnodes
+		Vec::new(),
+		// Telemetry
+		None,
+		// Protocol ID
+		Some("logion"),
+		// Fork ID
+		None,
+		// Properties
+		Some(default_properties("LGNT")),
+		// Extensions
+		Extensions {
+			relay_chain: "polkadot".into(),
+			para_id: main_para_id(),
+		},
+	)
+}
+
+fn main_para_id() -> u32 {
+	3341
+}
+
 pub fn local_testnet_config() -> ChainSpec {
 	ChainSpec::from_genesis(
 		// Name
@@ -195,18 +464,54 @@ pub fn local_testnet_config() -> ChainSpec {
 					),
 				],
 				vec![
-					get_account_id_from_seed::<sr25519::Public>("Alice"),
-					get_account_id_from_seed::<sr25519::Public>("Bob"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie"),
-					get_account_id_from_seed::<sr25519::Public>("Dave"),
-					get_account_id_from_seed::<sr25519::Public>("Eve"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
+						DEFAULT_TEST_BALANCE
+					),
+					(
+						get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+						DEFAULT_TEST_BALANCE
+					),
 				],
 				test_parachain_id(),
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -241,7 +546,7 @@ pub fn local_testnet_config() -> ChainSpec {
 
 fn build_genesis_config(
 	invulnerables: Vec<(AccountId, AuraId)>,
-	endowed_accounts: Vec<AccountId>,
+	endowed_accounts: Vec<(AccountId, Balance)>,
 	id: ParaId,
 	root_key: AccountId,
 	legal_officers: Vec<(AccountId, LegalOfficerData<AccountId>)>,
@@ -253,7 +558,7 @@ fn build_genesis_config(
 				.to_vec(),
 		},
 		balances: logion_runtime::BalancesConfig {
-			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
+			balances: endowed_accounts.iter().cloned().map(|k| (k.0, k.1)).collect(),
 		},
 		parachain_info: logion_runtime::ParachainInfoConfig { parachain_id: id },
 		collator_selection: logion_runtime::CollatorSelectionConfig {

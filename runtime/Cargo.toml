@@ -79,8 +79,9 @@ pallet-logion-vault = { git = "https://github.com/logion-network/logion-pallets"
 pallet-logion-vote = { git = "https://github.com/logion-network/logion-pallets", default-features = false,  branch = "polkadot-v0.9.40" }
 pallet-multisig = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.40" }
 pallet-recovery = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.40" }
-pallet-verified-recovery = { git = "https://github.com/logion-network/logion-pallets", default-features = false,  branch = "polkadot-v0.9.40" }
 pallet-treasury = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.40" }
+pallet-utility = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.40" }
+pallet-verified-recovery = { git = "https://github.com/logion-network/logion-pallets", default-features = false,  branch = "polkadot-v0.9.40" }
 
 [features]
 default = [
