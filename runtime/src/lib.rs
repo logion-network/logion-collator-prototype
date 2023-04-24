@@ -12,7 +12,7 @@ pub mod xcm_config;
 use logion_shared::{CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory, DistributionKey};
 use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
 use sp_api::impl_runtime_apis;
-use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
+use sp_core::{crypto::KeyTypeId, H160, OpaqueMetadata};
 use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	traits::{AccountIdConversion, AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, One, Verify},
@@ -91,8 +91,14 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 /// BlockId type as expected by this runtime.
 pub type BlockId = generic::BlockId<Block>;
 
-/// LOC ID
+/// LOC ID, compatible with UUIDs
 pub type LocId = u128;
+
+/// Ethereum Address
+pub type EthereumAddress = H160;
+
+/// Sponsorship ID, compatible with UUIDs
+pub type SponsorshipId = u128;
 
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
@@ -150,7 +156,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 2,
+	spec_version: 3,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -539,6 +545,8 @@ impl pallet_logion_loc::Config for Runtime {
 	type FileStorageEntryFee = FileStorageEntryFee;
 	type FileStorageFeeDistributor = RewardDistributor;
 	type FileStorageFeeDistributionKey = FileStorageFeeDistributionKey;
+	type EthereumAddress = EthereumAddress;
+	type SponsorshipId = SponsorshipId;
 }
 
 pub struct PalletRecoveryCreateRecoveryCallFactory;
