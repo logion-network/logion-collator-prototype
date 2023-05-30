@@ -9,7 +9,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 mod weights;
 pub mod xcm_config;
 
-use logion_shared::{CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory, DistributionKey};
+use logion_shared::{Beneficiary, CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory, DistributionKey, LegalFee, EuroCent};
 use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, H160, OpaqueMetadata};
@@ -39,6 +39,7 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
+use pallet_logion_loc::LocType;
 use pallet_multisig::Timepoint;
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier};
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -156,7 +157,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 3,
+	spec_version: 4,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -519,6 +520,27 @@ parameter_types! {
         collators_percent: Percent::from_percent(20),
         reserve_percent: Percent::from_percent(80),
     };
+	pub const ExchangeRate: Balance = 200_000_000_000_000_000; // 1 euro cent = 0.2 LGNT
+}
+
+pub struct  LegalFeeImpl;
+impl LegalFee<NegativeImbalance, Balance, LocType, AccountId> for LegalFeeImpl {
+
+	fn get_legal_fee(loc_type: LocType) -> EuroCent {
+		match loc_type {
+			LocType::Identity => 8_00, // 8.00 euros
+			_ => 100_00, // 100.00 euros
+		}
+	}
+
+	fn distribute(amount: NegativeImbalance, loc_type: LocType, loc_owner: AccountId) -> Beneficiary<AccountId> {
+		let (beneficiary, target) = match loc_type {
+			LocType::Identity => (Beneficiary::Treasury, TreasuryPalletId::get().into_account_truncating()),
+			_ => (Beneficiary::LegalOfficer(loc_owner.clone()), loc_owner),
+		};
+		Balances::resolve_creating(&target, amount);
+		beneficiary
+	}
 }
 
 impl pallet_logion_loc::Config for Runtime {
@@ -547,6 +569,8 @@ impl pallet_logion_loc::Config for Runtime {
 	type FileStorageFeeDistributionKey = FileStorageFeeDistributionKey;
 	type EthereumAddress = EthereumAddress;
 	type SponsorshipId = SponsorshipId;
+	type LegalFee = LegalFeeImpl;
+	type ExchangeRate = ExchangeRate;
 }
 
 pub struct PalletRecoveryCreateRecoveryCallFactory;
@@ -893,6 +917,16 @@ impl_runtime_apis! {
 	impl cumulus_primitives_core::CollectCollationInfo<Block> for Runtime {
 		fn collect_collation_info(header: &<Block as BlockT>::Header) -> cumulus_primitives_core::CollationInfo {
 			ParachainSystem::collect_collation_info(header)
+		}
+	}
+
+	impl pallet_logion_loc::runtime_api::FeesApi<Block, Balance> for Runtime {
+		fn query_file_storage_fee(num_of_entries: u32, tot_size: u32) -> Balance {
+			LogionLoc::calculate_fee(num_of_entries, tot_size)
+		}
+
+		fn query_legal_fee(loc_type: LocType) -> Balance {
+			LogionLoc::calculate_legal_fee(loc_type)
 		}
 	}
 
