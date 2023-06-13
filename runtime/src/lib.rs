@@ -19,6 +19,8 @@ use sp_runtime::{
 	transaction_validity::{TransactionSource, TransactionValidity},
 	ApplyExtrinsicResult, MultiSignature, Percent,
 };
+use frame_support::codec::{Decode, Encode};
+use scale_info::TypeInfo;
 
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -157,7 +159,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 4,
+	spec_version: 5,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -494,10 +496,34 @@ impl pallet_recovery::Config for Runtime {
 	type WeightInfo = ();
 }
 
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug, TypeInfo, Copy)]
+pub enum Region {
+	Europe,
+}
+
+impl sp_std::str::FromStr for Region {
+	type Err = ();
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		match s {
+			"Europe" => Ok(Region::Europe),
+			_ => Err(()),
+		}
+	}
+}
+
+impl Default for Region {
+
+	fn default() -> Self {
+		Self::Europe
+	}
+}
+
 impl pallet_lo_authority_list::Config for Runtime {
 	type AddOrigin = EnsureRoot<AccountId>;
     type RemoveOrigin = EnsureRoot<AccountId>;
 	type UpdateOrigin = EnsureRoot<AccountId>;
+	type Region = Region;
 	type RuntimeEvent = RuntimeEvent;
 }
 

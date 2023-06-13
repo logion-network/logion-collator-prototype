@@ -4749,7 +4749,7 @@ dependencies = [
 [[package]]
 name = "logion-shared"
 version = "0.1.1"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5641,7 +5641,7 @@ dependencies = [
 [[package]]
 name = "pallet-block-reward"
 version = "0.1.0"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5913,7 +5913,7 @@ dependencies = [
 [[package]]
 name = "pallet-lo-authority-list"
 version = "0.1.1"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5929,7 +5929,7 @@ dependencies = [
 [[package]]
 name = "pallet-logion-loc"
 version = "0.4.0"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5945,7 +5945,7 @@ dependencies = [
 [[package]]
 name = "pallet-logion-vault"
 version = "0.1.1"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5961,7 +5961,7 @@ dependencies = [
 [[package]]
 name = "pallet-logion-vote"
 version = "0.1.0"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6479,7 +6479,7 @@ dependencies = [
 [[package]]
 name = "pallet-verified-recovery"
 version = "0.1.1"
-source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#df49120f30a7f14c9273161cd48964d1e53220cd"
+source = "git+https://github.com/logion-network/logion-pallets?branch=polkadot-v0.9.41#a384a4392aa897f8a1ca21c66d4365aef8a3d064"
 dependencies = [
  "frame-support",
  "frame-system",

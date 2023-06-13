@@ -1,6 +1,6 @@
 use cumulus_primitives_core::ParaId;
 use logion_runtime::{AccountId, AuraId, Signature, EXISTENTIAL_DEPOSIT, Balance, LGNT};
-use pallet_lo_authority_list::{LegalOfficerData, HostData};
+use pallet_lo_authority_list::GenesisHostData;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sc_service::ChainType;
 use serde::{Deserialize, Serialize};
@@ -136,10 +136,11 @@ pub fn development_config() -> ChainSpec {
 				vec![ // Initial set of Logion Legal Officers
 					(
 						get_account_id_from_seed::<sr25519::Public>("Alice"),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2").into_vec().unwrap())),
 							base_url: None,
-						})
+							region: "Europe".into(),
+						}
 					),
 				],
 			)
@@ -231,10 +232,11 @@ pub fn chimay_config() -> ChainSpec {
 				vec![ // Initial set of logion Legal Officers
 					(
 						get_account_id_from_seed::<sr25519::Public>("Alice"),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2").into_vec().unwrap())),
 							base_url: None,
-						})
+							region: "Europe".into(),
+						}
 					),
 				],
 			)
@@ -340,87 +342,99 @@ pub fn main_config() -> ChainSpec {
 				vec![
 					(
 						AccountId::from_str("5FmqTpGanDBVHedXf42fiuWD8d2iBa2Ve8EfG13juifnpgat").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWPPCrBT2WxxPuBmdMFRs1JddaZjTPWvNdgRzWoFzZw2yT").into_vec().unwrap())),
 							base_url: Some("https://node01.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5GYirZEq8byGJePM9FM3JQG8Zwc5B6AcNpqgbrFvGRw2VQKE").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWSweFqPDamxmzjpgX7Q4bvfnpRKzTJ1igsYLU2ZsLL1TM").into_vec().unwrap())),
 							base_url: Some("https://node02.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5FQvrVyaxF6bmQkSKb6Xr9LdiWG4sr3CoyqPQvxJusowisoj").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWJSnG148nKuds3cEjYrjFMPNWh6biVBPxuppgQnn1owZC").into_vec().unwrap())),
 							base_url: Some("https://node03.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5Gn9QQ6Nnut9qv3yPH2N8ZheaYGaEDQZAiRrdiDq3sBBFPQ2").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWDM1X5iuEmGvxoCjhWXZLMAh3oqfQrAPvaVS8qunKdWCD").into_vec().unwrap())),
 							base_url: Some("https://node04.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5HQjQDPEZ8kxGmr5qKdURSMc18753TSH8FvL39i3Bfd5YRCa").unwrap(), // Never registered
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWF2NhEHjy8tvtsG7VxHEJaaXDhEqgwrW5Jb9N5pYd5pYv").into_vec().unwrap())),
 							base_url: Some("https://node05.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5GWxv6y9XA2CQG3xZ3jDXkvYs4bucazqByHQYrjn8u8mH2qE").unwrap(), // Never registered
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWCM56Vtr8puXPbhwGzDNj66hq5zGwCy23piCfDprSfPEK").into_vec().unwrap())),
 							base_url: Some("https://node06.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5CifPzNnEb8ffgoBB26dkcTKDKZnuMg7c3YyZqLKgyQQPrgB").unwrap(), // Never registered
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWRTrKaUzLeKk21QAke4ifXUo41CRvtJfsvwxYd7UWfcjU").into_vec().unwrap())),
 							base_url: Some("https://node07.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5CZy9rGJBsSF9tQ6SkWsjA7kTBiN5ZYJm9zs5ByVPDHCkNHJ").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWF5rMEqrfrUbQah8RYhvUTyvumpbTeQVoib7Hhk3xTg6r").into_vec().unwrap())),
 							base_url: Some("https://node08.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5HGLG8z2jm5KnHeWh2Du8tLLkEVmJ2B6sEnqVsxC2FYjxWRP").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWJrEjhUrwArbp7dsHx1QQzf2nSyQQR7B4kNUM4jhhMWPU").into_vec().unwrap())),
 							base_url: Some("https://node09.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5HBwJB8DDdXFA8bPRinc8nFuAsZPPFrHLtNeNLvw2jefFN4g").unwrap(), // Never registered
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWHHwE7UFWALqBGHCbt39aacL7ZbBav6sqWXP7jCUuDU1S").into_vec().unwrap())),
 							base_url: Some("https://node10.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5EnvH6Lq6LCNZdwS6xbpndEh1YWB51rsDD2pwGJvt13Ta68B").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWGSp3RmUM9JBSKizT4fZLuivTTH82jS3VQDQcFWhM6Pug").into_vec().unwrap())),
 							base_url: Some("https://node11.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 					(
 						AccountId::from_str("5Hox4L7Ek1CrXwbYzH8v64WvXkp6rQRkgxuhqE3i2c3farQ9").unwrap(),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWHyeYMPuCt69eREeM6AQoFdZVnex5ii5uMHEgfzck1mqU").into_vec().unwrap())),
 							base_url: Some("https://node12.logion.network".as_bytes().to_vec()),
-						})
+							region: "Europe".into(),
+						}
 					),
 				],
 			)
@@ -518,10 +532,11 @@ pub fn local_testnet_config() -> ChainSpec {
 				vec![ // Initial set of Logion Legal Officers
 					(
 						get_account_id_from_seed::<sr25519::Public>("Alice"),
-						LegalOfficerData::Host(HostData {
+						GenesisHostData {
 							node_id: Some(OpaquePeerId(bs58::decode("12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2").into_vec().unwrap())),
 							base_url: None,
-						})
+							region: "Europe".into(),
+						}
 					),
 				],
 			)
@@ -549,7 +564,7 @@ fn build_genesis_config(
 	endowed_accounts: Vec<(AccountId, Balance)>,
 	id: ParaId,
 	root_key: AccountId,
-	legal_officers: Vec<(AccountId, LegalOfficerData<AccountId>)>,
+	legal_officers: Vec<(AccountId, GenesisHostData)>,
 ) -> logion_runtime::GenesisConfig {
 	logion_runtime::GenesisConfig {
 		system: logion_runtime::SystemConfig {
