@@ -22,8 +22,6 @@ use sp_runtime::{
 use frame_support::codec::{Decode, Encode};
 use scale_info::TypeInfo;
 
-use pallet_lo_authority_list::migrations::v4::AddRegion;
-
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
@@ -131,7 +129,6 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
-	AddRegion<Runtime>,
 >;
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
