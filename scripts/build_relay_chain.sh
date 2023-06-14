@@ -14,6 +14,6 @@ fi
 
 # ../res/raw-local-chainspec.json may have to be updated on
 # branch change, see ./run_validator.sh
-git checkout release-v0.9.41
+git checkout release-v0.9.42
 
 cargo build --release
