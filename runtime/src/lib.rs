@@ -12,10 +12,14 @@ pub mod xcm_config;
 use logion_shared::{Beneficiary, CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory, DistributionKey, LegalFee, EuroCent};
 use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
 use sp_api::impl_runtime_apis;
-use sp_core::{crypto::KeyTypeId, H160, OpaqueMetadata};
+use sp_core::{crypto::KeyTypeId, H160, OpaqueMetadata, H256};
+use sp_io::hashing::sha2_256;
 use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
-	traits::{AccountIdConversion, AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, One, Verify},
+	traits::{
+		AccountIdConversion, AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount,
+		One, Verify
+	},
 	transaction_validity::{TransactionSource, TransactionValidity},
 	ApplyExtrinsicResult, MultiSignature, Percent,
 };
@@ -41,7 +45,7 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
-use pallet_logion_loc::LocType;
+use pallet_logion_loc::{LocType, Hasher};
 use pallet_multisig::Timepoint;
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier};
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -102,6 +106,9 @@ pub type EthereumAddress = H160;
 
 /// Sponsorship ID, compatible with UUIDs
 pub type SponsorshipId = u128;
+
+/// A given token's total supply type
+pub type TokenIssuance = u64;
 
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
@@ -533,10 +540,6 @@ impl pallet_lo_authority_list::Config for Runtime {
 }
 
 parameter_types! {
-	pub const MaxMetadataItemNameSize: usize = 255;
-	pub const MaxMetadataItemValueSize: usize = 4096;
-	pub const MaxFileNatureSize: usize = 255;
-	pub const MaxLinkNatureSize: usize = 255;
 	pub const MaxCollectionItemDescriptionSize: usize = 4096;
 	pub const MaxCollectionItemTokenIdSize: usize = 255;
 	pub const MaxCollectionItemTokenTypeSize: usize = 255;
@@ -552,6 +555,12 @@ parameter_types! {
         reserve_percent: Percent::from_percent(80),
     };
 	pub const ExchangeRate: Balance = 200_000_000_000_000_000; // 1 euro cent = 0.2 LGNT
+	pub const CertificateFee: u64 = 4_000_000_000_000_000; // 0.004 LGNT
+    pub const CertificateFeeDistributionKey: DistributionKey = DistributionKey {
+        stakers_percent: Percent::from_percent(0),
+        collators_percent: Percent::from_percent(20),
+        reserve_percent: Percent::from_percent(80),
+    };
 }
 
 pub struct  LegalFeeImpl;
@@ -574,15 +583,21 @@ impl LegalFee<NegativeImbalance, Balance, LocType, AccountId> for LegalFeeImpl {
 	}
 }
 
+pub struct SHA256;
+impl Hasher<H256> for SHA256 {
+
+	fn hash(data: &Vec<u8>) -> H256 {
+		let bytes = sha2_256(data);
+		H256(bytes)
+	}
+}
+
 impl pallet_logion_loc::Config for Runtime {
 	type LocId = LocId;
 	type RuntimeEvent = RuntimeEvent;
 	type Hash = Hash;
+	type Hasher = SHA256;
 	type IsLegalOfficer = LoAuthorityList;
-	type MaxMetadataItemNameSize = MaxMetadataItemNameSize;
-	type MaxMetadataItemValueSize = MaxMetadataItemValueSize;
-	type MaxFileNatureSize = MaxFileNatureSize;
-	type MaxLinkNatureSize = MaxLinkNatureSize;
 	type CollectionItemId = Hash;
 	type MaxCollectionItemDescriptionSize = MaxCollectionItemDescriptionSize;
 	type MaxCollectionItemTokenIdSize = MaxCollectionItemTokenIdSize;
@@ -596,12 +611,15 @@ impl pallet_logion_loc::Config for Runtime {
 	type Currency = Balances;
 	type FileStorageByteFee = FileStorageByteFee;
 	type FileStorageEntryFee = FileStorageEntryFee;
-	type FileStorageFeeDistributor = RewardDistributor;
+	type RewardDistributor = RewardDistributor;
 	type FileStorageFeeDistributionKey = FileStorageFeeDistributionKey;
 	type EthereumAddress = EthereumAddress;
 	type SponsorshipId = SponsorshipId;
 	type LegalFee = LegalFeeImpl;
 	type ExchangeRate = ExchangeRate;
+	type CertificateFee = CertificateFee;
+	type CertificateFeeDistributionKey = CertificateFeeDistributionKey;
+	type TokenIssuance = TokenIssuance;
 }
 
 pub struct PalletRecoveryCreateRecoveryCallFactory;
@@ -960,13 +978,17 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl pallet_logion_loc::runtime_api::FeesApi<Block, Balance> for Runtime {
+	impl pallet_logion_loc::runtime_api::FeesApi<Block, Balance, TokenIssuance> for Runtime {
 		fn query_file_storage_fee(num_of_entries: u32, tot_size: u32) -> Balance {
 			LogionLoc::calculate_fee(num_of_entries, tot_size)
 		}
 
 		fn query_legal_fee(loc_type: LocType) -> Balance {
 			LogionLoc::calculate_legal_fee(loc_type)
+		}
+
+		fn query_certificate_fee(token_issuance: TokenIssuance) -> Balance {
+			LogionLoc::calculate_certificate_fee(token_issuance)
 		}
 	}
 
