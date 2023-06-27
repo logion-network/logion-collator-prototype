@@ -549,18 +549,18 @@ parameter_types! {
 	pub const MaxTokensRecordFiles: u32 = 10;
 	pub const FileStorageByteFee: Balance = 100 * NANO_LGNT; // 0.1 LGNT per MB
 	pub const FileStorageEntryFee: Balance = 0;
-    pub const FileStorageFeeDistributionKey: DistributionKey = DistributionKey {
-        stakers_percent: Percent::from_percent(0),
-        collators_percent: Percent::from_percent(20),
-        reserve_percent: Percent::from_percent(80),
-    };
+	pub const FileStorageFeeDistributionKey: DistributionKey = DistributionKey {
+		stakers_percent: Percent::from_percent(0),
+		collators_percent: Percent::from_percent(20),
+		reserve_percent: Percent::from_percent(80),
+	};
 	pub const ExchangeRate: Balance = 200_000_000_000_000_000; // 1 euro cent = 0.2 LGNT
 	pub const CertificateFee: u64 = 4_000_000_000_000_000; // 0.004 LGNT
-    pub const CertificateFeeDistributionKey: DistributionKey = DistributionKey {
-        stakers_percent: Percent::from_percent(0),
-        collators_percent: Percent::from_percent(20),
-        reserve_percent: Percent::from_percent(80),
-    };
+	pub const CertificateFeeDistributionKey: DistributionKey = DistributionKey {
+		stakers_percent: Percent::from_percent(0),
+		collators_percent: Percent::from_percent(20),
+		reserve_percent: Percent::from_percent(80),
+	};
 }
 
 pub struct  LegalFeeImpl;
