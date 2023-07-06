@@ -71,7 +71,7 @@ and did not clean-up the data, you can just start the nodes (steps 3, 4 and 10).
 10. Run collator with command `./scripts/run_collator.sh`
 
 11. Wait for the collator to start producing blocks (spy the parachain's best and finalized block in the logs
-or via Polkadot.js's dashboard: Network > Parachains ), this may take some time (around 3 minutes). Also, block production
+or via Polkadot.js's dashboard: Network > Parachains), this may take some time (around 3 minutes). Also, block production
 may not be stable at the beginning. Again, waiting for a couple of minutes should be enough.
 
 12. You may start interacting with the logion parachain using Polkadot.js and connecting to `ws://localhost:8844`.
