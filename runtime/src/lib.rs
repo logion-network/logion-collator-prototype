@@ -166,7 +166,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 5,
+	spec_version: 6,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -554,6 +554,7 @@ parameter_types! {
 		stakers_percent: Percent::from_percent(0),
 		collators_percent: Percent::from_percent(20),
 		reserve_percent: Percent::from_percent(80),
+		treasury_percent: Percent::from_percent(0),
 	};
 	pub const ExchangeRate: Balance = 200_000_000_000_000_000; // 1 euro cent = 0.2 LGNT
 	pub const CertificateFee: u64 = 4_000_000_000_000_000; // 0.004 LGNT
@@ -561,6 +562,13 @@ parameter_types! {
 		stakers_percent: Percent::from_percent(0),
 		collators_percent: Percent::from_percent(20),
 		reserve_percent: Percent::from_percent(80),
+		treasury_percent: Percent::from_percent(0),
+    };
+	pub const ValueFeeDistributionKey: DistributionKey = DistributionKey {
+        stakers_percent: Percent::from_percent(0),
+        collators_percent: Percent::from_percent(0),
+        reserve_percent: Percent::from_percent(0),
+		treasury_percent: Percent::from_percent(100),
 	};
 }
 
@@ -621,6 +629,7 @@ impl pallet_logion_loc::Config for Runtime {
 	type CertificateFee = CertificateFee;
 	type CertificateFeeDistributionKey = CertificateFeeDistributionKey;
 	type TokenIssuance = TokenIssuance;
+	type ValueFeeDistributionKey = ValueFeeDistributionKey;
 }
 
 pub struct PalletRecoveryCreateRecoveryCallFactory;
@@ -738,6 +747,7 @@ parameter_types! {
         stakers_percent: Percent::from_percent(50),
         collators_percent: Percent::from_percent(30),
         reserve_percent: Percent::from_percent(20),
+		treasury_percent: Percent::from_percent(0),
     };
 }
 
@@ -762,6 +772,12 @@ impl logion_shared::RewardDistributor<NegativeImbalance, Balance>
 			Balances::resolve_creating(&TreasuryPalletId::get().into_account_truncating(), reward);
 		}
     }
+
+	fn payout_treasury(reward: NegativeImbalance) {
+		if reward != NegativeImbalance::zero() {
+			Balances::resolve_creating(&TreasuryPalletId::get().into_account_truncating(), reward);
+		}
+	}
 }
 
 impl pallet_block_reward::Config for Runtime {
