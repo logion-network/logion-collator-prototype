@@ -10,7 +10,7 @@ use std::str::FromStr;
 
 /// Specialized `ChainSpec` for the normal parachain runtime.
 pub type ChainSpec =
-	sc_service::GenericChainSpec<logion_runtime::GenesisConfig, Extensions>;
+	sc_service::GenericChainSpec<logion_runtime::RuntimeGenesisConfig, Extensions>;
 
 /// The default XCM version to set in genesis config.
 const SAFE_XCM_VERSION: u32 = xcm::prelude::XCM_VERSION;
@@ -565,17 +565,21 @@ fn build_genesis_config(
 	id: ParaId,
 	root_key: AccountId,
 	legal_officers: Vec<(AccountId, GenesisHostData)>,
-) -> logion_runtime::GenesisConfig {
-	logion_runtime::GenesisConfig {
+) -> logion_runtime::RuntimeGenesisConfig {
+	logion_runtime::RuntimeGenesisConfig {
 		system: logion_runtime::SystemConfig {
 			code: logion_runtime::WASM_BINARY
 				.expect("WASM binary was not build, please build it!")
 				.to_vec(),
+			..Default::default()
 		},
 		balances: logion_runtime::BalancesConfig {
 			balances: endowed_accounts.iter().cloned().map(|k| (k.0, k.1)).collect(),
 		},
-		parachain_info: logion_runtime::ParachainInfoConfig { parachain_id: id },
+		parachain_info: logion_runtime::ParachainInfoConfig {
+			parachain_id: id,
+			..Default::default()
+		},
 		collator_selection: logion_runtime::CollatorSelectionConfig {
 			invulnerables: invulnerables.iter().cloned().map(|(acc, _)| acc).collect(),
 			candidacy_bond: EXISTENTIAL_DEPOSIT * 16,
@@ -600,6 +604,7 @@ fn build_genesis_config(
 		parachain_system: Default::default(),
 		polkadot_xcm: logion_runtime::PolkadotXcmConfig {
 			safe_xcm_version: Some(SAFE_XCM_VERSION),
+			..Default::default()
 		},
 		sudo: logion_runtime::SudoConfig {
 			// Assign network admin rights.
