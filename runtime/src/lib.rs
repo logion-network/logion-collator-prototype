@@ -166,7 +166,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 7,
+	spec_version: 8,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -575,7 +575,7 @@ parameter_types! {
 pub struct  LegalFeeImpl;
 impl LegalFee<NegativeImbalance, Balance, LocType, AccountId> for LegalFeeImpl {
 
-	fn get_legal_fee(loc_type: LocType) -> EuroCent {
+	fn get_default_legal_fee(loc_type: LocType) -> EuroCent {
 		match loc_type {
 			LocType::Identity => 8_00, // 8.00 euros
 			_ => 100_00, // 100.00 euros
@@ -1001,7 +1001,7 @@ impl_runtime_apis! {
 		}
 
 		fn query_legal_fee(loc_type: LocType) -> Balance {
-			LogionLoc::calculate_legal_fee(loc_type)
+			LogionLoc::calculate_default_legal_fee(loc_type)
 		}
 
 		fn query_certificate_fee(token_issuance: TokenIssuance) -> Balance {
