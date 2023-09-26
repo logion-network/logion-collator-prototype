@@ -1,6 +1,6 @@
-# Logion Collator Node
+# Logion Collator Node Prototype
 
-This project contains logion's collator node.
+This project contains logion's collator node prototype.
 
 This project is originally a fork of the
 [Substrate Cumulus Parachain Template](https://github.com/substrate-developer-hub/substrate-parachain-template/tree/a04589bc06143080982345acdf17635c4118fe48).
