@@ -4991,7 +4991,6 @@ dependencies = [
  "cumulus-primitives-core",
  "cumulus-primitives-timestamp",
  "cumulus-primitives-utility",
- "enum-as-inner",
  "frame-benchmarking",
  "frame-executive",
  "frame-support",
