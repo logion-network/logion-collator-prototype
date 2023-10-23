@@ -26,7 +26,7 @@ else
   OTHER_OPTIONS="--bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2"
 fi
 
-../polkadot/target/release/polkadot \
+../polkadot-sdk/target/release/polkadot \
     --$1 \
     --base-path /tmp/relay/$1 \
     --chain ./res/raw-local-chainspec.json \
