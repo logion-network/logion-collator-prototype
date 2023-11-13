@@ -614,7 +614,8 @@ fn build_genesis_config(
 			legal_officers,
 		},
 		transaction_payment: Default::default(),
-		treasury: Default::default(),
+		logion_treasury: Default::default(),
+		community_treasury: Default::default(),
 	}
 }
 
