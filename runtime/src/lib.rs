@@ -172,7 +172,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("logion"),
 	impl_name: create_runtime_str!("logion"),
 	authoring_version: 1,
-	spec_version: 10,
+	spec_version: 11,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -365,10 +365,11 @@ parameter_types! {
         loc_owner_percent: Percent::from_percent(0),
     };
 
-// Inflation: 5%
-// The reward can be calculated as follows: N * (0,05 / (3600 * 24 * 365 / 6)) where N is the total supply
-// With N=10^9, we would mint 10 LGNT every block
-    pub const InflationAmount: Balance = 10 * LGNT;
+	// Inflation: I=0,05 (5%)
+	// Total supply: N=10^9
+	// The reward can be calculated as follows: N * (I / (3600 * 24 * 365 / 12))
+	// With N=10^9 and I=5%, we mint 20 LGNT every block
+    pub const InflationAmount: Balance = 20 * LGNT;
     pub const InflationDistributionKey: DistributionKey = DistributionKey {
         collators_percent: Percent::from_percent(35),
         community_treasury_percent: Percent::from_percent(30),
@@ -801,10 +802,8 @@ impl logion_shared::RewardDistributor<NegativeImbalance, Balance, AccountId>
 		}
     }
 
-	fn payout_collators(reward: NegativeImbalance) {
-		if reward != NegativeImbalance::zero() {
-			drop(reward);
-		}
+	fn get_collators() -> Vec<AccountId> {
+		CollatorSelection::invulnerables().to_vec()
 	}
 
 	fn payout_logion_treasury(reward: NegativeImbalance) {
