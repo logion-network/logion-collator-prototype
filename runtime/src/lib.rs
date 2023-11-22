@@ -11,6 +11,8 @@ pub mod xcm_config;
 
 use logion_shared::{CreateRecoveryCallFactory, MultisigApproveAsMultiCallFactory, MultisigAsMultiCallFactory, DistributionKey, RewardDistributor as RewardDistributorTrait};
 use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
+use cumulus_primitives_core::ParaId;
+use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, H160, OpaqueMetadata, H256};
 use sp_io::hashing::sha2_256;
@@ -18,7 +20,7 @@ use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	traits::{
 		AccountIdConversion, AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount,
-		One, Verify
+		IdentityLookup, One, Verify
 	},
 	transaction_validity::{TransactionSource, TransactionValidity},
 	ApplyExtrinsicResult, MultiSignature, Percent,
@@ -35,7 +37,10 @@ use frame_support::{
 	construct_runtime,
 	dispatch::DispatchClass,
 	parameter_types,
-	traits::{ConstBool, ConstU32, ConstU64, ConstU8, Contains, Currency, EitherOfDiverse, Imbalance, OnUnbalanced},
+	traits::{
+		tokens::{UnityAssetBalanceConversion, PayFromAccount},
+		ConstBool, ConstU32, ConstU64, ConstU8, Contains, Currency, EitherOfDiverse, Imbalance, OnUnbalanced
+	},
 	weights::{
 		constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight,
 	},
@@ -352,7 +357,8 @@ impl pallet_balances::Config for Runtime {
 	type MaxReserves = ConstU32<0>;
 	type ReserveIdentifier = [u8; 8];
 	type RuntimeHoldReason = RuntimeHoldReason;
-	type FreezeIdentifier = [u8; 8];
+	type RuntimeFreezeReason = RuntimeFreezeReason;
+	type FreezeIdentifier = ();
 	type MaxHolds = ConstU32<0>;
 	type MaxFreezes = ConstU32<0>;
 }
@@ -489,7 +495,7 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type ControllerOrigin = EnsureRoot<AccountId>;
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
 	type WeightInfo = ();
-	type PriceForSiblingDelivery = ();
+	type PriceForSiblingDelivery = NoPriceForMessageDelivery<ParaId>;
 }
 
 impl cumulus_pallet_dmp_queue::Config for Runtime {
@@ -752,6 +758,7 @@ parameter_types! {
     pub const ProposalBond: Permill = Permill::from_percent(5);
     pub const ProposalBondMinimum: Balance = 100 * LGNT;
     pub const SpendPeriod: BlockNumber = 1 * DAYS;
+    pub const SpendPayoutPeriod: BlockNumber = 30 * DAYS;
 }
 
 type LogionTreasuryType = pallet_treasury::Instance1;
@@ -772,6 +779,12 @@ impl pallet_treasury::Config<LogionTreasuryType> for Runtime {
 	type SpendFunds = ();
 	type MaxApprovals = ConstU32<100>;
 	type SpendOrigin = frame_support::traits::NeverEnsureOrigin<Balance>;
+	type AssetKind = ();
+	type Beneficiary = AccountId;
+	type BeneficiaryLookup = IdentityLookup<AccountId>;
+	type Paymaster = PayFromAccount<Balances, LogionTreasuryAccountId>;
+	type BalanceConverter = UnityAssetBalanceConversion;
+	type PayoutPeriod = SpendPayoutPeriod;
 }
 
 type CommunityTreasuryType = pallet_treasury::Instance2;
@@ -792,6 +805,12 @@ impl pallet_treasury::Config<CommunityTreasuryType> for Runtime {
 	type SpendFunds = ();
 	type MaxApprovals = ConstU32<100>;
 	type SpendOrigin = frame_support::traits::NeverEnsureOrigin<Balance>;
+	type AssetKind = ();
+	type Beneficiary = AccountId;
+	type BeneficiaryLookup = IdentityLookup<AccountId>;
+	type Paymaster = PayFromAccount<Balances, CommunityTreasuryAccountId>;
+	type BalanceConverter = UnityAssetBalanceConversion;
+	type PayoutPeriod = SpendPayoutPeriod;
 }
 pub struct RewardDistributor;
 impl logion_shared::RewardDistributor<NegativeImbalance, Balance, AccountId, RuntimeOrigin, LoAuthorityList>
