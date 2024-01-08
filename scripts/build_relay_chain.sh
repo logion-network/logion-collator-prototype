@@ -14,6 +14,6 @@ fi
 
 # ../res/raw-local-chainspec.json may have to be updated on
 # branch change, see ./run_validator.sh
-git checkout polkadot-v1.3.0
+git checkout polkadot-v1.5.0
 
 cargo build --release

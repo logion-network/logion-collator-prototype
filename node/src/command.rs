@@ -19,11 +19,11 @@ use crate::{
 
 fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 	Ok(match id {
-		"dev" => Box::new(chain_spec::development_config()),
-		"chimay" => Box::new(chain_spec::chimay_config()),
-		"main" => Box::new(chain_spec::main_config()),
-		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
-		"" | "local" => Box::new(chain_spec::local_testnet_config()),
+		"dev" => Box::new(chain_spec::development_config()?),
+		"chimay" => Box::new(chain_spec::chimay_config()?),
+		"main" => Box::new(chain_spec::main_config()?),
+		"template-rococo" => Box::new(chain_spec::local_testnet_config()?),
+		"" | "local" => Box::new(chain_spec::local_testnet_config()?),
 		path => Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
 	})
 }
